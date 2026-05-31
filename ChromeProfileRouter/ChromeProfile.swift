@@ -17,6 +17,6 @@ struct ChromeProfile: Identifiable, Codable, Hashable {
             return gaiaName
         }
 
-        return "No account"
+        return "アカウント情報なし"
     }
 }

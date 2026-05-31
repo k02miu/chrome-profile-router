@@ -1,26 +1,26 @@
 # Chrome Profile Router
 
-Chrome Profile Router is a small macOS menu bar app that opens clicked links with a selected Google Chrome profile.
+Chrome Profile Router は、クリックしたリンクを選択中の Google Chrome プロファイルで開くための macOS メニューバーアプリです。
 
-It is intended for people who use multiple Chrome profiles and want a quick way to switch the default profile used for links.
+複数の Chrome プロファイルを使い分けていて、リンクを開くデフォルトのプロファイルをすぐ切り替えたい場合に使います。
 
-## Features
+## 機能
 
-- Scans local Google Chrome profiles.
-- Reads Chrome profile display names from `Local State`.
-- Lets you assign simpler aliases to profile folders.
-- Switches the default profile from the menu bar.
-- Registers as the macOS `http` and `https` handler.
-- Opens links with `Google Chrome --profile-directory=<folder>`.
-- Can launch automatically at login.
+- ローカルの Google Chrome プロファイルを検出します。
+- Chrome の `Local State` からプロファイル表示名を読み取ります。
+- 分かりづらいプロファイルフォルダ名にエイリアスを付けられます。
+- メニューバーからデフォルトプロファイルを切り替えられます。
+- macOS の `http` / `https` ハンドラとして登録できます。
+- `Google Chrome --profile-directory=<folder>` を使ってリンクを開きます。
+- OS ログイン時に自動起動できます。
 
-## Requirements
+## 動作要件
 
-- macOS 14 or later
+- macOS 14 以降
 - Google Chrome
-- Xcode 16 or later for local builds
+- ローカルビルドには Xcode 16 以降
 
-## Build
+## ビルド
 
 ```sh
 xcodebuild \
@@ -31,20 +31,20 @@ xcodebuild \
   build
 ```
 
-The app is built at:
+ビルドされたアプリは次の場所に出力されます。
 
 ```text
 DerivedData/Build/Products/Release/ChromeProfileRouter.app
 ```
 
-## Package
+## パッケージ作成
 
 ```sh
 scripts/package_app.sh
 ```
 
-The packaged app is written to `dist/ChromeProfileRouter.zip`.
+配布用 zip は `dist/ChromeProfileRouter.zip` に作成されます。
 
-## Notes
+## 補足
 
-The app does not depend on Finicky. It owns URL receipt, profile selection, Chrome launching, and the menu bar UI directly.
+このアプリは Finicky に依存しません。URL の受け取り、プロファイル選択、Chrome の起動、メニューバー UI をアプリ側で直接扱います。

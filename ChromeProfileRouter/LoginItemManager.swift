@@ -16,30 +16,30 @@ struct LoginItemManager {
         var label: String {
             switch self {
             case .enabled:
-                return "On"
+                return "有効"
             case .notRegistered:
-                return "Off"
+                return "無効"
             case .requiresApproval:
-                return "Needs Approval"
+                return "承認が必要"
             case .notFound:
-                return "Not Available"
+                return "利用不可"
             case .unknown:
-                return "Unknown"
+                return "不明"
             }
         }
 
         var description: String {
             switch self {
             case .enabled:
-                return "This app will open automatically when you log in."
+                return "ログイン時にこのアプリを自動で起動します。"
             case .notRegistered:
-                return "This app is not set to open at login."
+                return "ログイン時にこのアプリは起動しません。"
             case .requiresApproval:
-                return "macOS needs approval in System Settings before this app can open at login."
+                return "ログイン時に起動するには、macOS のシステム設定で承認が必要です。"
             case .notFound:
-                return "Install the app in Applications before enabling launch at login."
+                return "ログイン時の起動を有効にする前に、アプリを Applications にインストールしてください。"
             case .unknown:
-                return "macOS returned an unknown launch-at-login status."
+                return "macOS から不明なログイン項目ステータスが返されました。"
             }
         }
     }

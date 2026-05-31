@@ -18,9 +18,9 @@ struct MenuBarView: View {
             Divider()
 
             if appState.profiles.isEmpty {
-                Text("No Chrome profiles found")
+                Text("Chrome のプロファイルが見つかりません")
             } else {
-                Section("Default Profile") {
+                Section("デフォルトプロファイル") {
                     ForEach(appState.profiles) { profile in
                         Button {
                             appState.setDefaultProfile(profile)
@@ -38,25 +38,25 @@ struct MenuBarView: View {
 
             Divider()
 
-            Button("Refresh Profiles") {
+            Button("プロファイルを再読み込み") {
                 appState.refreshProfiles()
             }
 
-            Button(appState.isRegisteredAsDefaultBrowser ? "Default Browser Registered" : "Set as Default Browser") {
+            Button(appState.isRegisteredAsDefaultBrowser ? "デフォルトブラウザ登録済み" : "デフォルトブラウザに設定") {
                 appState.registerAsDefaultBrowser()
             }
 
-            Button("Launch at Login: \(appState.launchAtLoginStatus.label)") {
+            Button("ログイン時に起動: \(appState.launchAtLoginStatus.label)") {
                 appState.setLaunchAtLogin(!appState.isLaunchAtLoginEnabled)
             }
 
-            Button("Settings...") {
+            Button("設定...") {
                 openSettings()
             }
 
             Divider()
 
-            Button("Quit") {
+            Button("終了") {
                 NSApp.terminate(nil)
             }
         }

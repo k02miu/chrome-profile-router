@@ -56,7 +56,7 @@ final class AppState: ObservableObject {
 
     var menuBarTitle: String {
         guard let defaultProfile = defaultProfile else {
-            return "No Profile"
+            return "プロファイル未選択"
         }
 
         return displayName(for: defaultProfile)
@@ -64,10 +64,10 @@ final class AppState: ObservableObject {
 
     var currentProfileSummary: String {
         guard let defaultProfile else {
-            return "Current: No profile selected"
+            return "現在: プロファイル未選択"
         }
 
-        return "Current: \(displayName(for: defaultProfile))"
+        return "現在: \(displayName(for: defaultProfile))"
     }
 
     var defaultProfile: ChromeProfile? {
@@ -164,7 +164,7 @@ final class AppState: ObservableObject {
 
     func openIncomingURL(_ url: URL) {
         guard let profile = defaultProfile else {
-            lastError = "Choose a default Chrome profile before opening links."
+            lastError = "リンクを開く前に、デフォルトの Chrome プロファイルを選択してください。"
             return
         }
 

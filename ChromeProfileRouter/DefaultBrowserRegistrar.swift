@@ -10,9 +10,9 @@ struct DefaultBrowserRegistrar {
         var errorDescription: String? {
             switch self {
             case .missingBundleIdentifier:
-                return "This app does not have a bundle identifier."
+                return "このアプリに bundle identifier が設定されていません。"
             case .registrationFailed(let scheme, let status):
-                return "Failed to register \(scheme) handler. OSStatus: \(status)."
+                return "\(scheme) ハンドラの登録に失敗しました。OSStatus: \(status)"
             }
         }
     }

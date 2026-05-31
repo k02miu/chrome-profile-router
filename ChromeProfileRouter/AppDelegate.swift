@@ -61,11 +61,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         do {
             let manager = LoginItemManager()
             try manager.setLaunchAtLogin(enabled)
-            print("Launch at login: \(manager.status().label)")
+            print("ログイン時に起動: \(manager.status().label)")
             fflush(stdout)
             exit(EXIT_SUCCESS)
         } catch {
-            fputs("Launch at login failed: \(error.localizedDescription)\n", stderr)
+            fputs("ログイン時に起動の設定に失敗しました: \(error.localizedDescription)\n", stderr)
             fflush(stderr)
             exit(EXIT_FAILURE)
         }

@@ -9,9 +9,9 @@ struct ChromeLauncher {
         var errorDescription: String? {
             switch self {
             case .chromeNotFound:
-                return "Google Chrome.app was not found."
+                return "Google Chrome.app が見つかりません。"
             case .chromeExecutableNotFound(let appURL):
-                return "Chrome executable was not found in \(appURL.path)."
+                return "\(appURL.path) 内に Chrome の実行ファイルが見つかりません。"
             }
         }
     }

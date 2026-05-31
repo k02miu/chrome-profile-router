@@ -27,7 +27,7 @@ struct SettingsView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Chrome Profile Router")
                 .font(.largeTitle.bold())
-            Text("Route links to the selected Google Chrome profile.")
+            Text("選択した Google Chrome プロファイルでリンクを開きます。")
                 .foregroundStyle(.secondary)
         }
     }
@@ -35,19 +35,19 @@ struct SettingsView: View {
     private var profilesSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Profiles")
+                Text("プロファイル")
                     .font(.title2.bold())
                 Spacer()
-                Button("Refresh") {
+                Button("再読み込み") {
                     appState.refreshProfiles()
                 }
             }
 
             if appState.profiles.isEmpty {
                 ContentUnavailableView(
-                    "No Profiles",
+                    "プロファイルがありません",
                     systemImage: "person.crop.circle.badge.questionmark",
-                    description: Text("Open Chrome and create at least one profile.")
+                    description: Text("Chrome で少なくとも 1 つのプロファイルを作成してください。")
                 )
             } else {
                 List(appState.profiles) { profile in
@@ -61,14 +61,14 @@ struct SettingsView: View {
 
     private var routingSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Routing")
+            Text("ルーティング")
                 .font(.title2.bold())
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Default Profile")
+                Text("デフォルトプロファイル")
                     .font(.headline)
 
-                Picker("Default Profile", selection: defaultProfileBinding) {
+                Picker("デフォルトプロファイル", selection: defaultProfileBinding) {
                     ForEach(appState.profiles) { profile in
                         Text(appState.displayName(for: profile))
                             .tag(profile.directoryName)
@@ -82,13 +82,13 @@ struct SettingsView: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("macOS Default Browser")
+                Text("macOS のデフォルトブラウザ")
                     .font(.headline)
                 Text(defaultBrowserDescription)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
 
-                Button(appState.isRegisteredAsDefaultBrowser ? "Register Again" : "Set as Default Browser") {
+                Button(appState.isRegisteredAsDefaultBrowser ? "再登録" : "デフォルトブラウザに設定") {
                     appState.registerAsDefaultBrowser()
                 }
             }
@@ -96,7 +96,7 @@ struct SettingsView: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
-                Toggle("Launch at Login", isOn: launchAtLoginBinding)
+                Toggle("ログイン時に起動", isOn: launchAtLoginBinding)
                     .toggleStyle(.switch)
                 Text(appState.launchAtLoginDescription)
                     .foregroundStyle(.secondary)
@@ -106,11 +106,11 @@ struct SettingsView: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Test Open")
+                Text("動作確認")
                     .font(.headline)
                 TextField("URL", text: $testURLString)
                     .textFieldStyle(.roundedBorder)
-                Button("Open with Default Profile") {
+                Button("デフォルトプロファイルで開く") {
                     if let url = URL(string: testURLString) {
                         appState.openIncomingURL(url)
                     }
@@ -119,7 +119,7 @@ struct SettingsView: View {
             }
 
             if let lastOpenedURL = appState.lastOpenedURL {
-                Text("Last opened: \(lastOpenedURL.absoluteString)")
+                Text("最後に開いた URL: \(lastOpenedURL.absoluteString)")
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
                     .textSelection(.enabled)
@@ -144,7 +144,7 @@ struct SettingsView: View {
                 Spacer()
 
                 if appState.defaultProfileDirectory == profile.directoryName {
-                    Label("Default", systemImage: "checkmark.circle.fill")
+                    Label("デフォルト", systemImage: "checkmark.circle.fill")
                         .labelStyle(.iconOnly)
                         .foregroundStyle(.green)
                 }
@@ -155,15 +155,15 @@ struct SettingsView: View {
                 .foregroundStyle(.secondary)
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("Alias")
+                Text("エイリアス")
                     .font(.caption)
                     .foregroundStyle(.secondary)
 
                 HStack {
-                    TextField("Work, Personal, Client A...", text: aliasBinding(for: profile))
+                    TextField("仕事用、個人用、案件A...", text: aliasBinding(for: profile))
                         .textFieldStyle(.roundedBorder)
 
-                    Button("Clear") {
+                    Button("クリア") {
                         appState.resetAlias(for: profile)
                     }
                     .disabled(!appState.hasCustomAlias(for: profile))
@@ -171,13 +171,13 @@ struct SettingsView: View {
             }
 
             HStack(spacing: 8) {
-                Text("Chrome: \(profile.chromeName)")
+                Text("Chrome 名: \(profile.chromeName)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                     .truncationMode(.middle)
 
-                Text("Folder: \(profile.directoryName)")
+                Text("フォルダ: \(profile.directoryName)")
                     .font(.caption)
                     .foregroundStyle(.tertiary)
                     .lineLimit(1)
@@ -185,7 +185,7 @@ struct SettingsView: View {
 
                 Spacer()
 
-                Button("Make Default") {
+                Button("デフォルトにする") {
                     appState.setDefaultProfile(profile)
                 }
                 .disabled(appState.defaultProfileDirectory == profile.directoryName)
@@ -196,10 +196,10 @@ struct SettingsView: View {
 
     private func profileSubtitle(for profile: ChromeProfile) -> String {
         if appState.hasCustomAlias(for: profile) {
-            return "Alias for \(profile.chromeName)"
+            return "\(profile.chromeName) のエイリアス"
         }
 
-        return "Using Chrome profile name"
+        return "Chrome のプロファイル名を使用中"
     }
 
     private var defaultProfileBinding: Binding<String> {
@@ -230,9 +230,9 @@ struct SettingsView: View {
 
     private var defaultBrowserDescription: String {
         if appState.isRegisteredAsDefaultBrowser {
-            return "This app is registered for http and https links."
+            return "このアプリは http / https リンクのハンドラとして登録されています。"
         }
 
-        return "Register this app as the http and https handler, then macOS will send clicked links here first."
+        return "このアプリを http / https ハンドラとして登録すると、クリックしたリンクが最初にこのアプリへ送られます。"
     }
 }
