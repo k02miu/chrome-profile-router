@@ -45,6 +45,3 @@ scripts/package_app.sh
 
 配布用 zip は `dist/ChromeProfileRouter.zip` に作成されます。
 
-## 補足
-
-このアプリは Finicky に依存しません。URL の受け取り、プロファイル選択、Chrome の起動、メニューバー UI をアプリ側で直接扱います。
