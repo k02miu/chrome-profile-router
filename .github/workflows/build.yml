@@ -31,11 +31,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ChromeProfileRouter
-          path: dist/ChromeProfileRouter.zip
+          path: |
+            dist/ChromeProfileRouter.zip
+            dist/ChromeProfileRouter.dmg
           if-no-files-found: error
 
       - name: リリースアセットを公開
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/ChromeProfileRouter.zip
+          files: |
+            dist/ChromeProfileRouter.zip
+            dist/ChromeProfileRouter.dmg

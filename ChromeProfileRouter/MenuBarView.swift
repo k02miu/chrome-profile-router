@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MenuBarView: View {
     @EnvironmentObject private var appState: AppState
-    @Environment(\.openSettings) private var openSettings
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         VStack {
@@ -51,7 +51,7 @@ struct MenuBarView: View {
             }
 
             Button("設定...") {
-                openSettings()
+                openWindow(id: "main")
             }
 
             Divider()

@@ -6,18 +6,15 @@ struct ChromeProfileRouterApp: App {
     @StateObject private var appState = AppState()
 
     var body: some Scene {
-        MenuBarExtra {
-            MenuBarView()
-                .environmentObject(appState)
-        } label: {
-            HStack(spacing: 4) {
-                Image(systemName: "person.crop.circle")
-                Text(appState.menuBarTitle)
-            }
-        }
-
-        Settings {
+        WindowGroup("Chrome Profile Router", id: "main") {
             SettingsView()
+                .environmentObject(appState)
+        }
+        .defaultSize(width: 760, height: 520)
+        .windowResizability(.contentSize)
+
+        MenuBarExtra(appState.menuBarTitle, systemImage: "person.crop.circle") {
+            MenuBarView()
                 .environmentObject(appState)
         }
     }

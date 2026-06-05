@@ -20,6 +20,14 @@ Chrome Profile Router は、クリックしたリンクを選択中の Google Ch
 - Google Chrome
 - ローカルビルドには Xcode 16 以降
 
+## インストール
+
+Releases から `ChromeProfileRouter.dmg` をダウンロードして開き、`ChromeProfileRouter.app` を `Applications` にドラッグしてください。
+
+初回起動時は設定ウィンドウが開きます。起動中は画面右上の通知ではなく、macOS のメニューバー上にプロファイル名付きで表示されます。
+
+現時点の配布ビルドは Developer ID 署名と notarize を行っていません。macOS に「開発元を検証できません」と表示された場合は、Finder で右クリックして「開く」を選ぶか、システム設定のセキュリティから許可してください。
+
 ## ビルド
 
 ```sh
@@ -43,5 +51,5 @@ DerivedData/Build/Products/Release/ChromeProfileRouter.app
 scripts/package_app.sh
 ```
 
-配布用 zip は `dist/ChromeProfileRouter.zip` に作成されます。
+配布用 zip と DMG は `dist/` に作成されます。
 
