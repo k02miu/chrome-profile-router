@@ -4,14 +4,14 @@ import Foundation
 struct ChromeLauncher {
     enum LaunchError: LocalizedError {
         case chromeNotFound
-        case chromeExecutableNotFound(URL)
+        case openToolNotFound
 
         var errorDescription: String? {
             switch self {
             case .chromeNotFound:
                 return "Google Chrome.app が見つかりません。"
-            case .chromeExecutableNotFound(let appURL):
-                return "\(appURL.path) 内に Chrome の実行ファイルが見つかりません。"
+            case .openToolNotFound:
+                return "macOS の open コマンドが見つかりません。"
             }
         }
     }
@@ -27,18 +27,21 @@ struct ChromeLauncher {
             throw LaunchError.chromeNotFound
         }
 
-        let executableURL = chromeAppURL
-            .appendingPathComponent("Contents", isDirectory: true)
-            .appendingPathComponent("MacOS", isDirectory: true)
-            .appendingPathComponent("Google Chrome", isDirectory: false)
+        let openToolURL = URL(fileURLWithPath: "/usr/bin/open", isDirectory: false)
 
-        guard fileManager.isExecutableFile(atPath: executableURL.path) else {
-            throw LaunchError.chromeExecutableNotFound(chromeAppURL)
+        guard fileManager.isExecutableFile(atPath: openToolURL.path) else {
+            throw LaunchError.openToolNotFound
         }
 
         let process = Process()
-        process.executableURL = executableURL
+        process.executableURL = openToolURL
+        // Existing Chrome instances can route URLs to the last active profile.
+        // `open -n` gives Chrome a fresh argv so `--profile-directory` is honored.
         process.arguments = [
+            "-n",
+            "-a",
+            chromeAppURL.path,
+            "--args",
             "--profile-directory=\(profileDirectory)",
             url.absoluteString
         ]

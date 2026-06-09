@@ -11,7 +11,7 @@ Chrome Profile Router は、クリックしたリンクを選択中の Google Ch
 - 分かりづらいプロファイルフォルダ名にエイリアスを付けられます。
 - メニューバーからデフォルトプロファイルを切り替えられます。
 - macOS の `http` / `https` ハンドラとして登録できます。
-- `Google Chrome --profile-directory=<folder>` を使ってリンクを開きます。
+- `open -n -a Google Chrome --args --profile-directory=<folder>` を使って、選択したプロファイルでリンクを開きます。
 - OS ログイン時に自動起動できます。
 
 ## 動作要件
@@ -52,4 +52,3 @@ scripts/package_app.sh
 ```
 
 配布用 zip と DMG は `dist/` に作成されます。
-
