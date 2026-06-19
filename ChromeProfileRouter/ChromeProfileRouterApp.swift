@@ -17,11 +17,11 @@ struct ChromeProfileRouterApp: App {
             MenuBarView()
                 .environmentObject(appState)
         } label: {
-            Label {
-                Text(appState.menuBarTitle)
-            } icon: {
+            HStack(spacing: 4) {
                 Image(systemName: "person.crop.circle")
+                Text(appState.menuBarTitle)
             }
+                .id(appState.menuBarTitle)
         }
     }
 }
