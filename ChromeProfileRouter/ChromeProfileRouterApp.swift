@@ -13,9 +13,15 @@ struct ChromeProfileRouterApp: App {
         .defaultSize(width: 980, height: 720)
         .windowResizability(.contentSize)
 
-        MenuBarExtra(appState.menuBarTitle, systemImage: "person.crop.circle") {
+        MenuBarExtra {
             MenuBarView()
                 .environmentObject(appState)
+        } label: {
+            Label {
+                Text(appState.menuBarTitle)
+            } icon: {
+                Image(systemName: "person.crop.circle")
+            }
         }
     }
 }
