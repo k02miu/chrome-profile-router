@@ -37,7 +37,16 @@ jobs:
         run: |
           test -f dist/ChromeProfileRouter.zip
           test -f dist/ChromeProfileRouter.dmg
-          hdiutil verify dist/ChromeProfileRouter.dmg
+          sync
+          for attempt in 1 2 3 4 5; do
+            if hdiutil verify dist/ChromeProfileRouter.dmg; then
+              break
+            fi
+            if [ "$attempt" = "5" ]; then
+              exit 1
+            fi
+            sleep $((attempt * 2))
+          done
           codesign --verify --deep --strict --verbose=2 DerivedData/Build/Products/Release/ChromeProfileRouter.app
 
       - name: アーティファクトをアップロード
