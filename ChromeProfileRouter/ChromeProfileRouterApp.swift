@@ -10,7 +10,7 @@ struct ChromeProfileRouterApp: App {
             SettingsView()
                 .environmentObject(appState)
         }
-        .defaultSize(width: 760, height: 520)
+        .defaultSize(width: 980, height: 720)
         .windowResizability(.contentSize)
 
         MenuBarExtra(appState.menuBarTitle, systemImage: "person.crop.circle") {

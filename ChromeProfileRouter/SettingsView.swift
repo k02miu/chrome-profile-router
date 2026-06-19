@@ -20,7 +20,7 @@ struct SettingsView: View {
             }
         }
         .padding(24)
-        .frame(minWidth: 760, minHeight: 520)
+        .frame(minWidth: 940, minHeight: 680)
     }
 
     private var header: some View {
@@ -106,9 +106,10 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
 
-                Button(appState.isRegisteredAsDefaultBrowser ? "再登録" : "デフォルトブラウザに設定") {
+                Button(defaultBrowserButtonTitle) {
                     appState.registerAsDefaultBrowser()
                 }
+                .disabled(appState.isRegisteringDefaultBrowser)
             }
 
             Divider()
@@ -145,7 +146,7 @@ struct SettingsView: View {
 
             Spacer()
         }
-        .frame(minWidth: 260, maxWidth: 320)
+        .frame(minWidth: 320, maxWidth: 360)
     }
 
     private func profileRow(_ profile: ChromeProfile) -> some View {
@@ -259,5 +260,13 @@ struct SettingsView: View {
         }
 
         return "このアプリを http / https ハンドラとして登録すると、クリックしたリンクが最初にこのアプリへ送られます。"
+    }
+
+    private var defaultBrowserButtonTitle: String {
+        if appState.isRegisteringDefaultBrowser {
+            return "登録中..."
+        }
+
+        return appState.isRegisteredAsDefaultBrowser ? "再登録" : "デフォルトブラウザに設定"
     }
 }

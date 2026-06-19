@@ -42,9 +42,10 @@ struct MenuBarView: View {
                 appState.refreshProfiles()
             }
 
-            Button(appState.isRegisteredAsDefaultBrowser ? "デフォルトブラウザ登録済み" : "デフォルトブラウザに設定") {
+            Button(defaultBrowserButtonTitle) {
                 appState.registerAsDefaultBrowser()
             }
+            .disabled(appState.isRegisteringDefaultBrowser)
 
             Button("ログイン時に起動: \(appState.launchAtLoginStatus.label)") {
                 appState.setLaunchAtLogin(!appState.isLaunchAtLoginEnabled)
@@ -60,5 +61,13 @@ struct MenuBarView: View {
                 NSApp.terminate(nil)
             }
         }
+    }
+
+    private var defaultBrowserButtonTitle: String {
+        if appState.isRegisteringDefaultBrowser {
+            return "デフォルトブラウザ登録中..."
+        }
+
+        return appState.isRegisteredAsDefaultBrowser ? "デフォルトブラウザ登録済み" : "デフォルトブラウザに設定"
     }
 }

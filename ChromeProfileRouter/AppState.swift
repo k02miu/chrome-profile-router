@@ -6,6 +6,7 @@ final class AppState: ObservableObject {
     @Published private(set) var lastOpenedURL: URL?
     @Published private(set) var lastError: String?
     @Published private(set) var launchAtLoginStatus: LoginItemManager.LoginItemStatus = .unknown
+    @Published private(set) var isRegisteringDefaultBrowser = false
     @Published var defaultProfileDirectory: String?
     @Published var aliases: [String: String]
     @Published var launchMethod: ChromeLaunchMethod
@@ -146,11 +147,22 @@ final class AppState: ObservableObject {
     }
 
     func registerAsDefaultBrowser() {
-        do {
-            try DefaultBrowserRegistrar.registerCurrentApp()
-            lastError = nil
-        } catch {
-            lastError = error.localizedDescription
+        guard !isRegisteringDefaultBrowser else {
+            return
+        }
+
+        isRegisteringDefaultBrowser = true
+        Task { @MainActor in
+            defer {
+                isRegisteringDefaultBrowser = false
+            }
+
+            do {
+                try await DefaultBrowserRegistrar.registerCurrentApp()
+                lastError = nil
+            } catch {
+                lastError = error.localizedDescription
+            }
         }
     }
 

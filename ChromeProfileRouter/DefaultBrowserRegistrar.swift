@@ -1,34 +1,45 @@
 import AppKit
-import CoreServices
 import Foundation
 
 struct DefaultBrowserRegistrar {
     enum RegistrarError: LocalizedError {
         case missingBundleIdentifier
-        case registrationFailed(scheme: String, status: OSStatus)
+        case registrationFailed(Error)
 
         var errorDescription: String? {
             switch self {
             case .missingBundleIdentifier:
                 return "このアプリに bundle identifier が設定されていません。"
-            case .registrationFailed(let scheme, let status):
-                return "\(scheme) ハンドラの登録に失敗しました。OSStatus: \(status)"
+            case .registrationFailed(let error):
+                return "デフォルトブラウザの登録に失敗しました: \(error.localizedDescription)"
             }
         }
     }
 
-    static let schemes = ["http", "https"]
+    private static let registrationScheme = "http"
+    static let schemes = [registrationScheme, "https"]
 
-    static func registerCurrentApp() throws {
+    @MainActor
+    static func registerCurrentApp() async throws {
         guard let bundleIdentifier = Bundle.main.bundleIdentifier, !bundleIdentifier.isEmpty else {
             throw RegistrarError.missingBundleIdentifier
         }
 
-        for scheme in schemes {
-            let status = LSSetDefaultHandlerForURLScheme(scheme as CFString, bundleIdentifier as CFString)
-            guard status == noErr else {
-                throw RegistrarError.registrationFailed(scheme: scheme, status: status)
+        do {
+            let _: Void = try await withCheckedThrowingContinuation { continuation in
+                NSWorkspace.shared.setDefaultApplication(
+                    at: Bundle.main.bundleURL,
+                    toOpenURLsWithScheme: registrationScheme
+                ) { error in
+                    if let error {
+                        continuation.resume(throwing: error)
+                    } else {
+                        continuation.resume()
+                    }
+                }
             }
+        } catch {
+            throw RegistrarError.registrationFailed(error)
         }
     }
 
