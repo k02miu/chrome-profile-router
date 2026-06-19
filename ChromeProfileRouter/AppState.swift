@@ -8,6 +8,7 @@ final class AppState: ObservableObject {
     @Published private(set) var launchAtLoginStatus: LoginItemManager.LoginItemStatus = .unknown
     @Published var defaultProfileDirectory: String?
     @Published var aliases: [String: String]
+    @Published var launchMethod: ChromeLaunchMethod
 
     private let scanner: ChromeProfileScanner
     private let launcher: ChromeLauncher
@@ -29,6 +30,7 @@ final class AppState: ObservableObject {
         let settings = settingsStore.load()
         self.defaultProfileDirectory = settings.defaultProfileDirectory
         self.aliases = settings.aliases
+        self.launchMethod = settings.launchMethod
 
         refreshProfiles()
         refreshLaunchAtLoginStatus()
@@ -138,6 +140,11 @@ final class AppState: ObservableObject {
         saveSettings()
     }
 
+    func setLaunchMethod(_ method: ChromeLaunchMethod) {
+        launchMethod = method
+        saveSettings()
+    }
+
     func registerAsDefaultBrowser() {
         do {
             try DefaultBrowserRegistrar.registerCurrentApp()
@@ -169,7 +176,11 @@ final class AppState: ObservableObject {
         }
 
         do {
-            try launcher.open(url, profileDirectory: profile.directoryName)
+            try launcher.open(
+                url,
+                profileDirectory: profile.directoryName,
+                launchMethod: launchMethod
+            )
             lastOpenedURL = url
             lastError = nil
         } catch {
@@ -191,7 +202,8 @@ final class AppState: ObservableObject {
         settingsStore.save(
             AppSettings(
                 defaultProfileDirectory: defaultProfileDirectory,
-                aliases: aliases
+                aliases: aliases,
+                launchMethod: launchMethod
             )
         )
     }

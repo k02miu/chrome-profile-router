@@ -79,6 +79,24 @@ struct SettingsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
 
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Chrome の起動方式")
+                    .font(.headline)
+
+                Picker("Chrome の起動方式", selection: launchMethodBinding) {
+                    ForEach(ChromeLaunchMethod.allCases) { method in
+                        Text(method.title)
+                            .tag(method)
+                    }
+                }
+                .labelsHidden()
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text(appState.launchMethod.description)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
@@ -218,6 +236,13 @@ struct SettingsView: View {
         Binding(
             get: { appState.aliases[profile.directoryName] ?? "" },
             set: { appState.setAlias($0, for: profile) }
+        )
+    }
+
+    private var launchMethodBinding: Binding<ChromeLaunchMethod> {
+        Binding(
+            get: { appState.launchMethod },
+            set: { appState.setLaunchMethod($0) }
         )
     }
 
